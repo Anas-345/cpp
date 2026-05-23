@@ -4,6 +4,7 @@ using namespace std;
 
 class Account
 {
+protected:
     char name[20], accountNumber[10];
     float balance;
 
@@ -46,13 +47,28 @@ public:
 
         balance -= amount;
     }
-    void displayDetails() const
+    virtual void displayDetails() const
     {
         cout << name << "'s account number " << accountNumber << " has a total balance of Rs. " << balance;
     }
     const char *getAccountNumber() const
     {
         return accountNumber;
+    }
+};
+
+class SavingsAccount : public Account
+{
+public:
+    SavingsAccount(char defaultName[], char defaultAccountNumber[], float defaultBalance) : Account(defaultName, defaultAccountNumber, defaultBalance) {}
+    void addInterest(float interestRate)
+    {
+        balance += (balance * interestRate);
+    }
+    void displayDetails() const
+    {
+        Account::displayDetails();
+        cout << "[Type: Savings Account]";
     }
 };
 
@@ -91,6 +107,7 @@ int main()
 {
     Bank bank1;
     Account obj1;
+    SavingsAccount obj("Anas", "101D", 100);
     bank1.addAccount(obj1);
     bank1.depositFromBank("101", 10000);
     bank1.showAllAccounts();
